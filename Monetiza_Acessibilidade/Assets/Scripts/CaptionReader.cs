@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Video;
+using UnityEngine.SceneManagement;
 
 public class CaptionReader : MonoBehaviour
 {
@@ -12,9 +13,19 @@ public class CaptionReader : MonoBehaviour
     void Start()
     {
         GameEvents.Instance.OnMouseEnter += ReadCaption;
-        GameEvents.Instance.OnMouseExit += RemoveCaption;
 
         videoPlayer = GetComponent<VideoPlayer>();
+
+        if (SceneManager.GetActiveScene().buildIndex != 0 && SceneManager.GetActiveScene().buildIndex != 6)
+        {
+            videoPlayer.clip = videoClips[0];
+            videoPlayer.Play();
+        }
+        else if (SceneManager.GetActiveScene().buildIndex == 6)
+        {
+            videoPlayer.clip = videoClips[3];
+            videoPlayer.Play();
+        }
     }
 
     void Update()
@@ -38,10 +49,5 @@ public class CaptionReader : MonoBehaviour
                 isPaused = false;
             }
         }
-    }
-
-    void RemoveCaption()
-    {
-
     }
 }
